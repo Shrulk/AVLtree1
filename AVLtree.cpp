@@ -50,10 +50,21 @@ public:
             cout << endl;
         }
     }
+	
+	Node <T> * Find(AVLTree t,int key)
+	{
+		
+		return _find(t.root, key);
+	}
+	
+	
+	
+	
+	
 
 private:
 	Node<T> * root;
-
+	
 	int _height(const Node <T> * pNode)
 	{
 		//t++;
@@ -264,6 +275,9 @@ int main()
     for(int i = 0; i < 10; ++i)
         t.Insert(i);
     t.ViewLevels();
+	cout<<t.Find(t, 42)<<endl;
+	
+	//t.ViewLevels();
 	t.Delete();
 	//t.ViewLevels();
 }
