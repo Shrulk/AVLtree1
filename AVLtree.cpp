@@ -15,11 +15,11 @@ public:
 	Node() : data(0), l(NULL), r(NULL), h(0) {}
 	Node (const A i =0) : data(i), l(NULL), r(NULL), h(0) {}
 	Node (const Node & x): data(x.data), l(x.l), r(x.r), h(x.h) {}
-	~Node()
+	/*~Node()
 	{
 		if (l)	delete l;
 		if (r) delete r;
-	}
+	}*/
 };
 
 
@@ -31,9 +31,15 @@ public:
 	{
 		root = _insert(root, key);
 	}
+	
 	void Display()
 	{
 		_display(root);
+	}
+	
+	void Delete()
+	{
+		_delete(root);
 	}
 	
 	void ViewLevels()
@@ -53,10 +59,12 @@ private:
 		//t++;
 		return pNode ? pNode->h : 0;
 	}
+	
 	int _balance(const Node <T> * pNode)
 	{
 		return pNode ? (pNode->l? pNode->l->h:0) - (pNode->r? pNode->r->h:0) : 0;
 	}
+	
 	Node <T> * _l_rotation(Node <T> * pNode)
 	{
 		Node <T> * tmpNode = pNode->r;
@@ -66,6 +74,7 @@ private:
 		tmpNode->h = max(_height(tmpNode->l),_height(tmpNode->r))+1;
 		return tmpNode;
 	}
+	
 	Node <T> * _r_rotation(Node <T> * pNode)
 	{
 		Node <T> * tmpNode = pNode->l;
@@ -75,18 +84,21 @@ private:
 		tmpNode->h = max(_height(tmpNode->l),_height(tmpNode->r))+1;
 		return tmpNode;
 	}
+	
 	Node <T> * _R_rotation(Node <T> * pNode)
 	{
 		Node <T> * tmpNode = pNode->l;
 		pNode->l = _l_rotation(tmpNode);
 		return _r_rotation(pNode);
 	}
+	
 	Node <T> * _L_rotation(Node <T> * pNode)
 	{
 		Node <T> * tmpNode = pNode->r;
 		pNode->r = _r_rotation(tmpNode);
 		return _l_rotation(pNode);
 	}
+	
 	Node <T> * _balancing(Node <T> * pNode)
 	{
 		int b_factor = _balance(pNode);
@@ -105,6 +117,7 @@ private:
 		}
 		return pNode;
 	}
+	
 	Node <T> * _insert(Node <T> * pNode, const  T key)
 	{
 		if (!pNode) return new Node<T>(key);
@@ -126,6 +139,7 @@ private:
 		pNode->h = max(_height(pNode->l),_height(pNode->r))+1;
 		return pNode;
 	}
+	
 	void _display(Node <T> * pNode)
 	{
 		if (!pNode) return;
@@ -133,20 +147,55 @@ private:
 		cout << pNode->data << ' ';
 		_display(pNode->r);
 	}
+	
+	/*	void _delete(Node <T> * pNode)
+	{
+		if (!pNode) return;
+		if(pNode->l != NULL)
+		{
+			_delete(pNode->l);
+		}
+		if(pNode->r != NULL)
+		{
+			_delete(pNode->r);
+		}
+		delete pNode;
+		//_remove(pNode, pNode->data);
+	}*/
+	
+	void _delete(Node <T> * pNode)
+	{
+		if(pNode != NULL)
+		{
+			if(pNode -> l != NULL)
+			{
+				_delete(pNode -> l);
+			}
+			if(pNode -> r != NULL)
+			{
+				_delete(pNode -> r);
+			}
+			delete pNode;
+		} 
+	}
+	
 	Node <T> * _find_min(const Node < T> * pNode)
 	{
 		return pNode->l ? _find_min(pNode->l) : pNode;
 	}
+	
 	Node <T> * _find_max(const Node < T> * pNode)
 	{
 		return pNode->r ? _find_max(pNode->r) : pNode;
 	}
+	
 	Node <T> * _find(Node <T> * pNode, const  T key)
 	{
 		if (pNode == NULL) return NULL;
 		else if (pNode->data == key) return pNode;
 		else return pNode->data > key ? _find(pNode->l, key) : _find(pNode->r, key);
 	}
+	
 	void _remove(Node <T> * pNode, const  T key)
 	{
 		Node<T> * tmpNode = _find(pNode, key);
@@ -207,7 +256,14 @@ private:
 };
 
 
+
 int main()
 {
-	
+	AVLTree<int> t;
+    t.Insert(42);
+    for(int i = 0; i < 10; ++i)
+        t.Insert(i);
+    t.ViewLevels();
+	t.Delete();
+	//t.ViewLevels();
 }
